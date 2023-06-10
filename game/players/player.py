@@ -6,5 +6,5 @@ class Player:
         self.COLOR = color
         self.tree = tree
     
-    def play():
+    def play(self, x = None, y = None):
         pass

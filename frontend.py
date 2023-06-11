@@ -35,61 +35,7 @@ print(board_width, board_height)
 # In[67]:
 
 
-pygame.init()
 
-
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Othello")
-clock = pygame.time.Clock()
-run = True
-while run:
-    clock.tick(FPS)
-    draw_resetButton(screen)
-    pygame.display.update()
-    if(reset == 1):
-        draw_board(screen)
-        screen_reset(screen)
-        draw_score(screen, 2, 2)
-        write_turn(screen, 1)
-        draw_resetButton(screen)
-        pygame.display.update()
-        reset = 0
-        continue
-    for event in pygame.event.get():        
-        if event.type == pygame.QUIT:
-            run = False
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            mouse_pos = pygame.mouse.get_pos()
-            print(pygame.mouse.get_pos())
-            print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
-            if((mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
-               (mouse_pos[1]>= reset_y[0]) and (mouse_pos[1]<= reset_y[1])):
-                reset = 1
-#                 screen.fill((255, 255, 255))
-#                 draw_resetButton(screen)
-#                 pygame.display.update()
-            
-            elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
-               (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
-                if (player == 1): next_player = 2
-                elif (player == 2): next_player = 1  
-
-                draw_board(screen)
-                #sample is the board output of backend
-                circles = circles_cor(sample)
-                draw_circles(screen, circles)
-
-                #1, 2 will be replaced with the output score of backend
-                draw_score(screen, 1, 2)
-                write_turn(screen, player)
-
-                pygame.display.update()
-    player = next_player
-    print(player)
-    
-    
-
-pygame.quit()
 
 
 # In[3]:
@@ -228,3 +174,58 @@ def draw_resetButton(screen):
     smallfont = pygame.font.SysFont('freesansbold.ttf',35)
     text = smallfont.render('Reset' , True , color)
     screen.blit(text, dest=(186,board_height/2+20+38-14+76+9))
+    
+    
+pygame.init()
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Othello")
+clock = pygame.time.Clock()
+run = True
+while run:
+    clock.tick(FPS)
+    draw_resetButton(screen)
+    pygame.display.update()
+    if(reset == 1):
+        draw_board(screen)
+        screen_reset(screen)
+        draw_score(screen, 2, 2)
+        write_turn(screen, 1)
+        draw_resetButton(screen)
+        pygame.display.update()
+        reset = 0
+        continue
+    for event in pygame.event.get():        
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEBUTTONDOWN: 
+            mouse_pos = pygame.mouse.get_pos()
+            print(pygame.mouse.get_pos())
+            print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
+            if((mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
+               (mouse_pos[1]>= reset_y[0]) and (mouse_pos[1]<= reset_y[1])):
+                reset = 1
+#                 screen.fill((255, 255, 255))
+#                 draw_resetButton(screen)
+#                 pygame.display.update()
+            
+            elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
+               (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
+                if (player == 1): next_player = 2
+                elif (player == 2): next_player = 1  
+
+                draw_board(screen)
+                #sample is the board output of backend
+                circles = circles_cor(sample)
+                draw_circles(screen, circles)
+
+                #1, 2 will be replaced with the output score of backend
+                draw_score(screen, 1, 2)
+                write_turn(screen, player)
+
+                pygame.display.update()
+    player = next_player
+    print(player)
+    
+    
+
+pygame.quit()

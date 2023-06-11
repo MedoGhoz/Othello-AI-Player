@@ -13,6 +13,7 @@ class StateNode:
   heuristic = None
   children = []
   def __init__(self, state = None) -> None:
+    self.children = []
     if (state): 
       self.state = state
     else:

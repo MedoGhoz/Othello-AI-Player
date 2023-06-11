@@ -6,6 +6,7 @@ class Color(enum.Enum):
   EMPTY = 0
   BLACK = 1
   WHITE = 2
+  POSSIBLE = 3
 
 class StateNode:
   state = None

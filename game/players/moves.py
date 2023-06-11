@@ -9,10 +9,10 @@ from copy import copy, deepcopy
 
 state = [[0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 2, 1, 0, 0, 0],
-         [0, 0, 0, 1, 2, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 3, 0, 0, 0, 0],
+         [0, 0, 1, 1, 1, 0, 0, 0],
+         [0, 0, 0, 1, 2, 3, 0, 0],
+         [0, 0, 0, 0, 3, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0],
         ]
@@ -218,7 +218,9 @@ def printState(state):
         line += "\n"
     print(line)
 
-printState(state)
-state = availableMoves(state, playerNum=1, opponentNum=2)
-printState(state["state"])
-print(state["validMoves"])
+# printState(state)
+# state = availableMoves(state, playerNum=2, opponentNum=1)
+newstate = updateState(state, 4, 2, 2, 1)
+# printState(state["state"])
+printState(newstate)
+# print(state["validMoves"])

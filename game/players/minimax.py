@@ -1,5 +1,5 @@
 #Minmax function
-from internals.node import StateNode
+from ..internals.node import StateNode
 import copy
 def minimax(state):
     def max_value(state):

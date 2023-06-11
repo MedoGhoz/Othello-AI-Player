@@ -5,6 +5,12 @@ from game.players.human import Human
 from game.players.moves import availableMoves
 
 
+def driver(color, row = None, col = None):
+  if player1.COLOR.value == color:
+    player1.play(x, y)
+  else:
+    player2.play(x, y)
+
 if __name__ == "__main__":
 
   
@@ -12,7 +18,10 @@ if __name__ == "__main__":
   print(game.getCurrentNode())
   # Get coordinates of all possible next moves
 
+  difficulty = 214
+
   player1 = Human(game, Color.BLACK)
+  # player1 = AI(game, Color.BLACK, difficulty)
   player2 = Human(game, Color.WHITE)
 
   while True: 
@@ -21,7 +30,9 @@ if __name__ == "__main__":
     # get black and white score
     print("Current Score", game.getCurrentNode().getScore())
 
-    # print(game.getCurrentNode().state)
+    # Get current State (with possible moves)
+    print("current moves", availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state'])
+    # Get next possible moves
     print("current moves", availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['validMoves'])
 
     x = int(input("X Move: "))

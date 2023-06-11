@@ -26,8 +26,7 @@ def expand(state: StateNode, playerNum, opponentNum, depth):
     # print(children)
     for child in children:
         state.addChild(child)
-        printState(child.state)
-    for child in state.getChildren():
+    for child in newState.getChildren():
         expand(child, opponentNum, playerNum, depth - 1)
     return state
 
@@ -42,6 +41,7 @@ state.state =[  [0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0],
             ]
 # print(validMoves(state, 1, 2))
-tree = expand(state, 1, 2, 2)
+tree = expand(state, 1, 2, 1)
 # print(tree.getChildren())
-# printState(tree.getChildren()[0].state)
+for child in tree.getChildren():
+    printState(child.getChildren()[0].state)

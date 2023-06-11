@@ -4,8 +4,7 @@ from copy import copy, deepcopy
 # 0 => empty
 # 1 => black
 # 2 => white
-# 3 => possible move for black
-# 4 => possible move for white
+# 3 => possible move
 
 state = [[0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0],
@@ -35,92 +34,92 @@ def availableMoves(state, playerNum, opponentNum):
                 j = y
                 while(j < 6 and state[i][j + 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i][j + 1] == 0):
-                        state[i][j + 1] = playerNum + 2                  
+                        state[i][j + 1] = 3                  
                         validMoves.append((i, j + 1))
                     j +=1
                 if(state[i][j] == opponentNum and state[i][j + 1] == 0):
-                    state[i][j + 1] = playerNum + 2
+                    state[i][j + 1] = 3
                     validMoves.append((i, j + 1))
                 # check for moves to the left
                 i = x
                 j = y
                 while(j > 1 and state[i][j - 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i][j -1] == 0):
-                        state[i][j - 1] = playerNum + 2
+                        state[i][j - 1] = 3
                         validMoves.append((i, j - 1))
                     j -=1
                 if(state[i][j] == opponentNum and state[i][j - 1] == 0):
-                    state[i][j - 1] = playerNum + 2
+                    state[i][j - 1] = 3
                     validMoves.append((i, j - 1))
                 # check for moves upwards
                 i = x
                 j = y
                 while(i > 1 and state[i - 1][j] != playerNum):
                     if(state[i][j] == opponentNum and state[i - 1][j] == 0):
-                        state[i - 1][j] = playerNum + 2
+                        state[i - 1][j] = 3
                         validMoves.append((i - 1, j))
                     i -=1
                 if(state[i][j] == opponentNum and state[i - 1][j] == 0):
-                    state[i - 1][j] = playerNum + 2
+                    state[i - 1][j] = 3
                     validMoves.append((i - 1, j))
                 # check for moves downwards
                 i = x
                 j = y
                 while(i < 6 and state[i + 1][j] != playerNum):
                     if(state[i][j] == opponentNum and state[i + 1][j] == 0):
-                        state[i + 1][j] = playerNum + 2
+                        state[i + 1][j] = 3
                         validMoves.append((i + 1, j))
                     i +=1
                 if(state[i][j] == opponentNum and state[i + 1][j] == 0):
-                    state[i + 1][j] = playerNum + 2
+                    state[i + 1][j] = 3
                     validMoves.append((i + 1, j))
                 # check for moves right-up diagonally
                 i = x
                 j = y
                 while(i > 1 and j < 6 and state[i - 1][j + 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i - 1][j + 1] == 0):
-                        state[i - 1][j + 1] = playerNum + 2
+                        state[i - 1][j + 1] = 3
                         validMoves.append((i - 1, j + 1))
                     i -=1
                     j +=1
                 if(state[i][j] == opponentNum and state[i - 1][j + 1] == 0):
-                    state[i - 1][j + 1] = playerNum + 2
+                    state[i - 1][j + 1] = 3
                     validMoves.append((i - 1, j + 1))
                 # check for moves right-down diagonally
                 i = x
                 j = y
                 while(i < 6 and j < 6 and state[i + 1][j + 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i + 1][j + 1] == 0):
-                        state[i + 1][j + 1] = playerNum + 2
+                        state[i + 1][j + 1] = 3
                         validMoves.append((i + 1, j + 1))
                     i +=1
                     j +=1
                 if(state[i][j] == opponentNum and state[i + 1][j + 1] == 0):
-                    state[i + 1][j + 1] = playerNum + 2
+                    state[i + 1][j + 1] = 3
                     validMoves.append((i + 1, j + 1))
                 # check for moves left-up diagonally
                 i = x
                 j = y
                 while(i > 1 and j > 1 and state[i - 1][j - 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i - 1][j - 1] == 0):
-                        state[i - 1][j - 1] = playerNum + 2
+                        state[i - 1][j - 1] = 3
                         validMoves.append((i - 1, j - 1))
                     i -=1
                     j -=1
                 if(state[i][j] == opponentNum and state[i - 1][j - 1] == 0):
-                    state[i - 1][j - 1] = playerNum + 2
+                    state[i - 1][j - 1] = 3
                     validMoves.append((i - 1, j - 1))
                 # check for moves left-down diagonally
                 i = x
                 j = y
                 while(i < 6 and j > 1 and state[i + 1][j - 1] != playerNum):
                     if(state[i][j] == opponentNum and state[i + 1][j - 1] == 0):
-                        state[i + 1][j - 1] = playerNum + 2
+                        state[i + 1][j - 1] = 3
                         validMoves.append((i + 1, j - 1))
                     i +=1
                     j -=1
                 if(state[i][j] == opponentNum and state[i + 1][j - 1] == 0):
-                    state[i + 1][j - 1] = playerNum + 2
+                    state[i + 1][j - 1] = 3
                     validMoves.append((i + 1, j - 1))
             y += 1
         x += 1
@@ -227,7 +226,7 @@ def printState(state):
 
 # printState(state)
 # state = availableMoves(state, playerNum=2, opponentNum=1)
-newstate = updateState(state, 4, 2, 2, 1)
+# newstate = updateState(state, 4, 2, 2, 1)
 # printState(state["state"])
-printState(newstate)
+# printState(newstate)
 # print(state["validMoves"])

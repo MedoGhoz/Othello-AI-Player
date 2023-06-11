@@ -1,7 +1,7 @@
-from internals.node import StateNode
-from players.moves import availableMoves
-from players.moves import updateState
-from players.moves import printState
+from .internals.node import StateNode
+from .players.moves import availableMoves
+from .players.moves import updateState
+from .players.moves import printState
 from copy import copy, deepcopy
 
 def validMoves(state: StateNode, playerNum, opponentNum):

@@ -1,10 +1,10 @@
-from ..internals.tree import StateTree
+from ..internals.game import Game
 
 class Player:
-    tree: StateTree
-    def __init__(self, tree, color) -> None:
+    game: Game
+    def __init__(self, game, color) -> None:
         self.COLOR = color
-        self.tree = tree
+        self.game = game
     
     def play(self, x = None, y = None):
         pass

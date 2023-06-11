@@ -18,6 +18,7 @@ state = [[0, 0, 0, 0, 0, 0, 0, 0],
 #function takes the state of the board and the player context
 #returns a new list representing possible moves for this specific player
 def availableMoves(state, playerNum, opponentNum):
+    state = deepcopy(state)
     #dictionary that containes the new state with possible moves and the indecies of these moves
     newState = {}
     #list of the indecies of possible moves

@@ -1,5 +1,5 @@
 from .node import StateNode, Color
-class StateTree:
+class Game:
   root = None
 
   def __init__(self): 
@@ -13,8 +13,8 @@ class StateTree:
   def setCurrentNode(self, node):
     self.root = node
 
-  def expand(self, node, depth):
-    pass
+  def setCurrentState(self, state):
+      self.root.state = state
 
   def minMax(self):
     pass

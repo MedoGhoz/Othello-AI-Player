@@ -142,6 +142,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(i > 1 and state[i - 1][j] == opponentNum):
         newState[i - 1][j] = playerNum
@@ -151,6 +152,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(j < 7 and state[i][j + 1] == opponentNum):
         newState[i][j + 1] = playerNum
@@ -160,6 +162,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(j > 1 and state[i][j - 1] == opponentNum):
         newState[i][j - 1] = playerNum
@@ -169,6 +172,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(i < 7 and j < 7 and state[i + 1][j + 1] == opponentNum):
         newState[i + 1][j + 1] = playerNum
@@ -179,6 +183,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(i < 7 and j > 1 and state[i + 1][j - 1] == opponentNum):
         newState[i + 1][j - 1] = playerNum
@@ -189,6 +194,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(i > 1 and j < 7 and state[i - 1][j + 1] == opponentNum):
         newState[i - 1][j + 1] = playerNum
@@ -199,6 +205,7 @@ def updateState(state, x, y, playerNum, opponentNum):
 
     i = x
     j = y
+    newState = deepcopy(state)
 
     while(i > 1 and j > 1 and state[i - 1][j - 1] == opponentNum):
         newState[i - 1][j - 1] = playerNum

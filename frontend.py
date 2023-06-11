@@ -4,7 +4,7 @@
 # In[ ]:
 
 
-get_ipython().system('pip install pygame')
+# get_ipython().system('pip install pygame')
 
 
 # In[1]:

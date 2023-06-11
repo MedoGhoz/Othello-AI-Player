@@ -1,5 +1,7 @@
+#Minmax function
+from internals.node import StateNode
 import copy
-def minimax(player, state):
+def minimax(state):
     def max_value(state):
         if len(state.getChildren()) == 0 :
             return state.heuristic

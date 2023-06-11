@@ -1,4 +1,4 @@
-from copy import copy, deepcopy
+from copy import deepcopy
 
 #state is a 2d list that represents the board
 # 0 => empty

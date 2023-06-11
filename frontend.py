@@ -51,7 +51,7 @@ while run:
         screen_reset(screen)
         draw_score(screen, 2, 2)
         write_turn(screen, 1)
-#         draw_resetButton(screen)
+        draw_resetButton(screen)
         pygame.display.update()
         reset = 0
         continue
@@ -65,9 +65,9 @@ while run:
             if((mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
                (mouse_pos[1]>= reset_y[0]) and (mouse_pos[1]<= reset_y[1])):
                 reset = 1
-                screen.fill((255, 255, 255))
-                draw_resetButton(screen)
-                pygame.display.update()
+#                 screen.fill((255, 255, 255))
+#                 draw_resetButton(screen)
+#                 pygame.display.update()
             
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
                (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):

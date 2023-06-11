@@ -1,3 +1,5 @@
+from copy import copy, deepcopy
+
 #state is a 2d list that represents the board
 # 0 => empty
 # 1 => black
@@ -125,6 +127,87 @@ def availableMoves(state, playerNum, opponentNum):
         newState["state"] = state
         newState["validMoves"] = validMoves
     return newState
+
+
+def updateState(state, x, y, playerNum, opponentNum):
+    state[x][y] = playerNum
+    newState = deepcopy(state)
+    i = x
+    j = y
+    while(i < 7 and state[i + 1][j] == opponentNum):
+        newState[i + 1][j] = playerNum
+        i += 1
+    if(i < 7 and newState[i + 1][j] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(i > 1 and state[i - 1][j] == opponentNum):
+        newState[i - 1][j] = playerNum
+        i -= 1
+    if(i > 1 and newState[i - 1][j] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(j < 7 and state[i][j + 1] == opponentNum):
+        newState[i][j + 1] = playerNum
+        j += 1
+    if(j < 7 and newState[i][j + 1] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(j > 1 and state[i][j - 1] == opponentNum):
+        newState[i][j - 1] = playerNum
+        j -= 1
+    if(j > 1 and newState[i][j - 1] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(i < 7 and j < 7 and state[i + 1][j + 1] == opponentNum):
+        newState[i + 1][j + 1] = playerNum
+        i += 1
+        j += 1
+    if(i < 7 and j < 7 and newState[i + 1][j + 1] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(i < 7 and j > 1 and state[i + 1][j - 1] == opponentNum):
+        newState[i + 1][j - 1] = playerNum
+        i += 1
+        j -= 1
+    if(i < 7 and j > 1 and newState[i + 1][j - 1] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(i > 1 and j < 7 and state[i - 1][j + 1] == opponentNum):
+        newState[i - 1][j + 1] = playerNum
+        i -= 1
+        j += 1
+    if(i > 1 and j < 7 and newState[i - 1][j + 1] == playerNum):
+        state = deepcopy(newState)
+
+    i = x
+    j = y
+
+    while(i > 1 and j > 1 and state[i - 1][j - 1] == opponentNum):
+        newState[i - 1][j - 1] = playerNum
+        i -= 1
+        j -= 1
+    if(i > 1 and j > 1 and newState[i - 1][j - 1] == playerNum):
+        state = deepcopy(newState)
+
+    return state
 
 
 def printState(state):

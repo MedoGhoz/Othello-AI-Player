@@ -1,5 +1,5 @@
 #Minimax function to find the best move 
-from ..internals.node import StateNode
+from internals.node import StateNode
 import copy
 def minimax(state):
     #represent the player who is trying to maximize their score

@@ -1,10 +1,10 @@
-from .internals.node import StateNode
-from .players.moves import availableMoves
-from .players.moves import updateState
-from .players.moves import printState
-from .players.minimax import minimax
+from internals.node import StateNode
+from players.moves import availableMoves
+from players.moves import updateState
+from players.moves import printState
+from players.minimax import minimax
+from players.Heuristics import total_heuristic
 from copy import deepcopy
-from utils import expand, printState
 
 
 def validMoves(state: StateNode, playerNum, opponentNum):
@@ -48,6 +48,19 @@ def expand(state: StateNode, playerNum, opponentNum, depth):
     #     i += 1
     # return state
 
+def setHeuristics(state: StateNode, playerNum):
+    color = ""
+    if(playerNum == 1):
+        color = 'black'
+    else:
+        color = 'white'
+    if len(state.getChildren()) == 0:
+        state.setHeuristic(total_heuristic(state.state,color))
+        return
+    for child in state.getChildren():
+        setHeuristics(child, playerNum)
+    return state
+
 
 state = StateNode()
 state.state = [
@@ -61,38 +74,17 @@ state.state = [
     [0, 0, 0, 0, 0, 0, 0, 0],
 ]
 # print(validMoves(state, 1, 2))
-i = 20
+
 tree = expand(state, 1, 2, 2)
-for firstChild in tree.getChildren():
-    printState(firstChild.state)
-    for child in firstChild.getChildren():
-        child.heuristic = 10.0 * i
-        i += 1
+setHeuristics(tree, 1)
 
 move = minimax(tree)
 printState(move)
-# print(tree.getChildren())
-# printState(tree.getChildren())
+
+
 # for firstChild in tree.getChildren():
+#     printState(firstChild.state)
+#     print("Heuristic value = ", firstChild.getHeuristic())
 #     for child in firstChild.getChildren():
 #         printState(child.state)
-
-def setHeuristics(state: StateNode):
-    if len(state.getChildren()) == 0:
-        state.setHeuristic(dummyFunction(state.state))
-        return
-    for child in state.getChildren():
-        setHeuristics(child)
-    return state
-
-def dummyFunction(state):
-    return 20
-
-setHeuristics(tree)
-
-for firstChild in tree.getChildren():
-    printState(firstChild.state)
-    print("Heuristic value = ", firstChild.getHeuristic())
-    for child in firstChild.getChildren():
-        printState(child.state)
-        print("Heuristic value = ", child.getHeuristic())
+#         print("Heuristic value = ", child.getHeuristic())

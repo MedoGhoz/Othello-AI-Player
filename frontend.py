@@ -1,19 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
 
-
-# get_ipython().system('pip install pygame')
-
-
-# In[1]:
 
 
 import pygame 
 
 
-# In[66]:
+# In[42]:
+
 
 init_board = [[0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0],
@@ -23,6 +18,12 @@ init_board = [[0,0,0,0,0,0,0,0],
                   [0,0,0,0,3,0,0,0],
                   [0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0]]
+
+
+# In[62]:
+
+
+import numpy as np
 screen_width = 800
 screen_height = 600
 rows, cols = 8, 8
@@ -38,19 +39,21 @@ start_x =(200, 340)
 start_y =(500, 540)
 begining = 1
 middle = 1
+reset_flag = False
+game_over = False
 board = init_board
 board_width, board_height = cols*cell_size + (cols-1)* line, rows*cell_size + (rows-1)* line
 board_leftTop_x, board_leftTop_y = screen_width-board_width-20, 20
 print(board_width, board_height)
 
 
-# In[67]:
+# In[63]:
 
 
 
 
 
-# In[3]:
+# In[44]:
 
 
 def draw_board(screen):
@@ -64,10 +67,10 @@ def draw_board(screen):
     for i in range(cols - 1):
         pygame.draw.rect(screen, (0, 0, 0), (main_rect.x + (i+1)*cell_size + i*line, main_rect.y ,
                                              line, board_height))   
-        
+       
 
 
-# In[4]:
+# In[45]:
 
 
 def draw_circles(screen, circles):
@@ -81,13 +84,13 @@ def draw_circles(screen, circles):
             m_circle = pygame.draw.circle(screen,circle[2],(circle[0], circle[1]),21)
 
 
-# In[5]:
+# In[46]:
 
 
 circles = [(443, 149,(255, 255, 255)), (495, 45, (0, 0, 0)), (651, 357,(255, 255, 255))]
 
 
-# In[6]:
+# In[47]:
 
 
 def selected_cell(x, y):
@@ -96,7 +99,7 @@ def selected_cell(x, y):
     return (row, col, player)
 
 
-# In[8]:
+# In[48]:
 
 
 # (row ,col, 0:B or 1:W)
@@ -119,7 +122,7 @@ def circles_cor(board):
             
 
 
-# In[9]:
+# In[49]:
 
 
 sample = [[0,0,1,2,3,0,0,1],
@@ -132,7 +135,7 @@ sample = [[0,0,1,2,3,0,0,1],
 [0,0,0,0,0,0,3,2]]
 
 
-# In[10]:
+# In[50]:
 
 
 def draw_score(screen, black_score, white_score):
@@ -147,7 +150,7 @@ def draw_score(screen, black_score, white_score):
     screen.blit(b_text, dest=(150, board_height/2+20+38-14))
 
 
-# In[31]:
+# In[51]:
 
 
 def write_turn(screen, player):
@@ -160,7 +163,7 @@ def write_turn(screen, player):
     screen.blit(b_text, dest=(screen_width/2 - 100 , (screen_height-board_height-20)/2 - 16 + board_height + 20))
 
 
-# In[28]:
+# In[52]:
 
 
 def screen_reset(screen):
@@ -187,8 +190,9 @@ def draw_resetButton(screen):
     text = smallfont.render('Reset' , True , color)
     screen.blit(text, dest=(186,board_height/2+20+38-14+76+9))
     
-    
 
+
+# In[54]:
 
 
 class Checkbox:
@@ -249,7 +253,11 @@ class Checkbox:
         if event_object.type == pygame.MOUSEBUTTONDOWN:
             self.click = True
             self._update(event_object)
-            
+
+
+# In[55]:
+
+
 def check_boxes(screen):
     boxes = []
     font = pygame.font.Font('freesansbold.ttf', 38)
@@ -264,18 +272,32 @@ def check_boxes(screen):
     boxes.append(button2)
     boxes.append(button3)
     nboxes = []
-
-
-
+ 
+    
+    
     b1= Checkbox(screen, 200, 350, 3, caption='Easy')
     b2 = Checkbox(screen, 200, 400, 4, caption='Medium')
     b3 = Checkbox(screen, 200, 450, 5, caption='Hard')
     nboxes.append(b1)
     nboxes.append(b2)
     nboxes.append(b3)
-
+    
     return boxes, nboxes
 
+
+# In[56]:
+
+
+def draw_startButton(screen):
+    color = (255,255,255)
+    color_light = (100,100,100)
+    pygame.draw.rect(screen,color_light,(200,500,140,40))
+    smallfont = pygame.font.SysFont('freesansbold.ttf',35)
+    text = smallfont.render('Start' , True , color)
+    screen.blit(text, dest=(243,508))
+
+
+# In[ ]:
 pygame.init()
 pygame.font.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -287,6 +309,7 @@ flag1 = False
 flag2 = False
 check1 = None
 check2 = None
+font = pygame.font.Font('freesansbold.ttf', 32)
 while run:
     clock.tick(FPS)
     if(begining == 1):
@@ -316,6 +339,7 @@ while run:
         _,nboxes = check_boxes(screen)
         b_text = font.render('Difficulty level: ', True, (0, 144, 103))
         screen.blit(b_text, dest=(200, 290))
+        
         button2 = Checkbox(screen, 200, 150, 1, caption=check1.caption)
         button2.checked = True
         button2.render_checkbox()
@@ -345,6 +369,8 @@ while run:
             screen_reset(screen)
             board = init_board
             draw_score(screen, 2, 2)
+            pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80))        
+            player = 1 
             write_turn(screen, 1)
             draw_resetButton(screen)
             pygame.display.update()
@@ -362,6 +388,8 @@ while run:
                     box.update_checkbox(event)
                     if box.checked is True:
                         check1 = box
+                        begining = 0
+                        middle = 1
                         for b in boxes:
                             if b != box:
                                 b.checked = False
@@ -372,8 +400,7 @@ while run:
                 pygame.display.update()                
                 pygame.display.flip()
 
-                begining = 0
-                middle = 1
+                
                 
                 
             elif(middle == 1): 
@@ -383,20 +410,22 @@ while run:
                     if box.checked is True:
                         flag2 = True
                         check2 = box
+                        middle = 0
+                        reset = 1
                         for b in boxes:
                             if b != box:
                                 b.checked = False
-                
-                check2.checked = True
-                check2.render_checkbox()
+                if(check2 != None):
+                    check2.checked = True
+                    check2.render_checkbox()
 
                 pygame.display.update()                
                 pygame.display.flip()
                 
-                middle = 0
-                reset = 1
+                
                 #to be sent check1 and check2
-                print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption)
+                if(check1 != None and check2 != None):
+                    print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption)
                 
 #                 if((mouse_pos[0]>= start_x[0]) and (mouse_pos[0]<= start_x[1]) and 
 #                     (mouse_pos[1]>= start_y[0]) and (mouse_pos[1]<= start_y[1])):
@@ -433,6 +462,7 @@ while run:
             elif(begining == 0 and middle == 0 and (mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
                (mouse_pos[1]>= reset_y[0]) and (mouse_pos[1]<= reset_y[1])):
                 reset = 1
+                reset_flag =False
 
 
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
@@ -441,27 +471,54 @@ while run:
                 row ,col,cur_player= selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
                 print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
                 if(board[row][col]== 3): 
-                    
-                    if (player == 1): next_player = 2
-                    elif (player == 2): next_player = 1  
+                    reset_flag=True
+                    if (player == 1): next_player =  2
+                    elif (player == 2): next_player =  1  
 
                     draw_board(screen)
                     #sample is the board output of backend
                     board = sample
-                    circles = circles_cor(sample)
-                    draw_circles(screen, circles)
-
-                    #1, 2 will be replaced with the output score of backend
-                    draw_score(screen, 1, 2)
-                    write_turn(screen, player)  
+                    board_gameOver= True
+                    for i in board:
+                        for j in i:
+                            if(j == 3 or j == 0):
+                                board_gameOver = False
+                                break 
+                    print("8888888888888",board_unique)
+                    if(not board_gameOver):
+                        #1, 2 will be replaced with the output score of backend
+                        circles = circles_cor(sample)
+                        draw_circles(screen, circles)
+                        draw_score(screen, 1, 2)
+                    else:
+                        pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80)) 
+                        b_text = font.render("Game over!", True, (255, 255, 255))
+                        screen.blit(b_text, dest=(300,501))
+                        pygame.display.update()
+                        game_over = True
+                        pygame.time.wait(10000)
+                        begining = 1
                 else:
+ 
                     next_player = player
+                
                 pygame.display.update()
         
-                
-    player = next_player
-    print(player)
+    if(not game_over):                
+        if( reset or reset_flag):
+            player = next_player
+        if(not begining and not middle):
+            pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80))    
+            if(reset): 
+                player = 1            
+            write_turn(screen, player)        
+            pygame.display.update()
+        print(player)
     
     
 
 pygame.quit()
+
+
+
+

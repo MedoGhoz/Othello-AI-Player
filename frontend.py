@@ -436,6 +436,9 @@ while run:
                         middle = 1
                         twice = True 
                 if(twice):
+                    if(check3 !=none):
+                        check3.checked = True
+                        check3.render_checkbox()
                     reset = 1
                     twice = False
                 pygame.display.update()                

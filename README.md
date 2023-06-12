@@ -1,11 +1,13 @@
 # Othello-AI-Player
 
-Table of Contents
+## Table of Contents
+
 - [Introduction](#introduction)
 - [Minimax Algorithm](#minimax-algorithm)
-
+- [References](#references)
 
 ## Introduction
+
 Othello game that allows human vs. human, human vs. computer and computer vs. computer using AI search algorithms and heuristics techniques.
 
 ## Minimax Algorithm
@@ -33,3 +35,9 @@ Othello game that allows human vs. human, human vs. computer and computer vs. co
 - The `minimax` function initializes the variables `best_state` and `best_score` to `None` and negative infinity, respectively. It then iterates through each child of the current state and calls the `max_value` function to obtain the best score and the corresponding state that Max can achieve. If the score is greater than the current best score, the function updates `best_state` and `best_score` with the new values.
 
 - Finally, the `minimax` function returns the best state that Max can achieve. This state represents the best move that Max can make in the current state of the game.
+
+## References
+
+1. Rosenbloom, P., A world-championship-level Othello program, Artificial Intelligence, 19, pp 279-320, 1982.
+2. Buro, M., Improving heurisitic minimax search by supervised learning, Artificial Intelligence 134, pp 85-99, 2002.
+3. Utgoff, E. P. Feature Construction for Game Playing, Technical Report, University of Massachutes, Amherst,MA.

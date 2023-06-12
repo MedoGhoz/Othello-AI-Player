@@ -1,9 +1,9 @@
-from internals.node import StateNode
-from players.moves import availableMoves
-from players.moves import updateState
-from players.moves import printState
-from players.minimax import minimax
-from players.Heuristics import total_heuristic
+from .internals.node import StateNode
+from .players.moves import availableMoves
+from .players.moves import updateState
+from .players.moves import printState
+from .players.minimax import minimax
+from .players.Heuristics import total_heuristic
 from copy import deepcopy
 
 

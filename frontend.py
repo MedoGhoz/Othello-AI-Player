@@ -15,7 +15,14 @@ import pygame
 
 # In[66]:
 
-
+init_board = [[0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0],
+                  [0,0,0,3,0,0,0,0],
+                  [0,0,3,2,1,0,0,0],
+                  [0,0,0,1,2,3,0,0],
+                  [0,0,0,0,3,0,0,0],
+                  [0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0]]
 screen_width = 800
 screen_height = 600
 rows, cols = 8, 8
@@ -31,7 +38,7 @@ start_x =(200, 340)
 start_y =(500, 540)
 begining = 1
 middle = 1
-board = []
+board = init_board
 board_width, board_height = cols*cell_size + (cols-1)* line, rows*cell_size + (rows-1)* line
 board_leftTop_x, board_leftTop_y = screen_width-board_width-20, 20
 print(board_width, board_height)
@@ -280,7 +287,6 @@ flag1 = False
 flag2 = False
 check1 = None
 check2 = None
-
 while run:
     clock.tick(FPS)
     if(begining == 1):
@@ -337,6 +343,7 @@ while run:
             screen.fill((34, 34, 34))
             draw_board(screen)
             screen_reset(screen)
+            board = init_board
             draw_score(screen, 2, 2)
             write_turn(screen, 1)
             draw_resetButton(screen)
@@ -431,9 +438,10 @@ while run:
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
                (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
                 #to be sent to backend
-                row ,col = selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
+                row ,col,cur_player= selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
                 print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
-                if(board[row][col]== 3):                
+                if(board[row][col]== 3): 
+                    
                     if (player == 1): next_player = 2
                     elif (player == 2): next_player = 1  
 
@@ -445,7 +453,9 @@ while run:
 
                     #1, 2 will be replaced with the output score of backend
                     draw_score(screen, 1, 2)
-                    write_turn(screen, player)                
+                    write_turn(screen, player)  
+                else:
+                    next_player = player
                 pygame.display.update()
         
                 

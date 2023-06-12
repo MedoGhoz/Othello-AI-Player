@@ -421,25 +421,24 @@ while run:
                         if(not twice):
                             check2 = box
                             middle = 1
-                            reset = 0
+                           
                         else :
                             check3 = box
-                            middle = 0
-                            reset = 1
                         for b in boxes:
                             if b != box:
                                 b.checked = False
-                if(check2 != None):
+                if(check2 != None and not twice):
                     check2.checked = True
                     check2.render_checkbox()
                     if(check1.caption == "Computer vs Computer"):
                         middle = 1
                         twice = True 
-                if(twice):
-                    if(check3 != None):
+                if(not(twice and check3 == None)):
+                    if(check3 !=None):
                         check3.checked = True
                         check3.render_checkbox()
                     reset = 1
+                    middle = 0
                     twice = False
                 pygame.display.update()                
                 pygame.display.flip()

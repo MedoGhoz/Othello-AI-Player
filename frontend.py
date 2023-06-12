@@ -181,35 +181,161 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Othello")
 clock = pygame.time.Clock()
 run = True
+flag1 = False
+flag2 = False
+check1 = None
+check2 = None
 while run:
     clock.tick(FPS)
-    draw_resetButton(screen)
-    pygame.display.update()
-    if(reset == 1):
-        draw_board(screen)
-        screen_reset(screen)
-        draw_score(screen, 2, 2)
-        write_turn(screen, 1)
+    if(begining == 1):
+        screen.fill((34, 34, 34))
+        boxes,_ = check_boxes(screen)
+        
+        for box in boxes:
+            box.render_checkbox()
+
+        
+        pygame.display.update()
+        pygame.display.flip()
+
+#                 pygame.time.wait(1000000)
+        if(boxes[0].checked):
+            print("button1")
+        if(boxes[0].checked):
+            print("button1")
+        elif(boxes[1].checked):
+            print("button2")
+        elif(boxes[2].checked):
+            print("button3")
+            
+    elif(middle == 1):
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        screen.fill((34, 34, 34))
+        _,nboxes = check_boxes(screen)
+        b_text = font.render('Difficulty level: ', True, (0, 144, 103))
+        screen.blit(b_text, dest=(200, 290))
+        button2 = Checkbox(screen, 200, 150, 1, caption=check1.caption)
+        button2.checked = True
+        button2.render_checkbox()
+        for box in nboxes:
+            box.render_checkbox()
+
+
+        pygame.display.update()
+        pygame.display.flip()
+
+#                 pygame.time.wait(1000000)
+        if(nboxes[0].checked):
+            print("button1")
+        if(nboxes[0].checked):
+            print("button1")
+        elif(nboxes[1].checked):
+            print("button2")
+        elif(nboxes[2].checked):
+            print("button3")
+
+    else: 
         draw_resetButton(screen)
         pygame.display.update()
-        reset = 0
-        continue
+        if(reset == 1):
+            screen.fill((34, 34, 34))
+            draw_board(screen)
+            screen_reset(screen)
+            draw_score(screen, 2, 2)
+            write_turn(screen, 1)
+            draw_resetButton(screen)
+            pygame.display.update()
+            reset = 0
+            continue
     for event in pygame.event.get():        
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN: 
             mouse_pos = pygame.mouse.get_pos()
-            print(pygame.mouse.get_pos())
-            print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
-            if((mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
+            print("ABFABFABFABF",pygame.mouse.get_pos())
+            if(begining == 1): 
+               
+                for box in boxes:
+                    box.update_checkbox(event)
+                    if box.checked is True:
+                        check1 = box
+                        for b in boxes:
+                            if b != box:
+                                b.checked = False
+
+                for box in boxes:
+                    box.render_checkbox()
+
+                pygame.display.update()                
+                pygame.display.flip()
+
+                begining = 0
+                middle = 1
+                
+                
+            elif(middle == 1): 
+               
+                for box in nboxes:
+                    box.update_checkbox(event)
+                    if box.checked is True:
+                        flag2 = True
+                        check2 = box
+                        for b in boxes:
+                            if b != box:
+                                b.checked = False
+                
+                check2.checked = True
+                check2.render_checkbox()
+
+                pygame.display.update()                
+                pygame.display.flip()
+                
+                middle = 0
+                reset = 1
+                #to be sent check1 and check2
+                print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption)
+                
+#                 if((mouse_pos[0]>= start_x[0]) and (mouse_pos[0]<= start_x[1]) and 
+#                     (mouse_pos[1]>= start_y[0]) and (mouse_pos[1]<= start_y[1])):
+#                     print("AAAAAAAAAAaFFFFFFFFFFFFFFFff")
+#                     print("flags",flag1,flag2)
+#                     if(flag1 and flag2):
+#     #             if(((boxes[0].checked) or (boxes[1].checked) or (boxes[2].checked)) and
+#     #                   ((nboxes[0].checked) or (nboxes[1].checked) or (nboxes[2].checked))):           
+
+#                         print("******************")
+#                         if((boxes[0].checked)):
+#                             print("f1")
+#                         elif(boxes[1].checked):
+#                             print("f2")
+#                         elif(boxes[2].checked):
+#                             print("f3")
+#                         if(nboxes[0].checked):
+#                             print("f4")
+#                         elif(nboxes[1].checked):
+#                             print("f5")
+#                         elif(nboxes[2].checked):
+#                             print("f")
+                        
+                       
+#                         reset = 1
+#                         begining = 0
+#                         #to be sent check1 and check2
+#                         print("finnnnnnnnnnnnal: ",check1.caption, check2.caption)
+#                         flag1 = False
+#                         flag2 = False
+#                         check1 = None
+#                         check2 = None
+
+            elif(begining == 0 and middle == 0 and (mouse_pos[0]>= reset_x[0]) and (mouse_pos[0]<= reset_x[1]) and 
                (mouse_pos[1]>= reset_y[0]) and (mouse_pos[1]<= reset_y[1])):
                 reset = 1
-#                 screen.fill((255, 255, 255))
-#                 draw_resetButton(screen)
-#                 pygame.display.update()
-            
+
+
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
                (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
+                #to be sent to backend
+                print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
                 if (player == 1): next_player = 2
                 elif (player == 2): next_player = 1  
 
@@ -220,9 +346,10 @@ while run:
 
                 #1, 2 will be replaced with the output score of backend
                 draw_score(screen, 1, 2)
-                write_turn(screen, player)
-
+                write_turn(screen, player)                
                 pygame.display.update()
+        
+                
     player = next_player
     print(player)
     

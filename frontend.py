@@ -23,10 +23,14 @@ cell_size = 50
 line = 2 
 player = 1
 next_player = 1
-reset = 1
+reset = 0
 FPS = 60
 reset_x =(150, 290)
 reset_y =(327, 367)
+start_x =(200, 340)
+start_y =(500, 540)
+begining = 1
+middle = 1
 board_width, board_height = cols*cell_size + (cols-1)* line, rows*cell_size + (rows-1)* line
 board_leftTop_x, board_leftTop_y = screen_width-board_width-20, 20
 print(board_width, board_height)
@@ -177,14 +181,7 @@ def draw_resetButton(screen):
     
     
 
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Othello")
-clock = pygame.time.Clock()
-run = True
-flag1 = False
-flag2 = False
-check1 = None
-check2 = None
+
 
 class Checkbox:
     def __init__(self, surface, x, y, idnum, color=(230, 230, 230),
@@ -245,7 +242,7 @@ class Checkbox:
             self.click = True
             self._update(event_object)
             
- def check_boxes(screen):
+def check_boxes(screen):
     boxes = []
     font = pygame.font.Font('freesansbold.ttf', 38)
 
@@ -259,18 +256,30 @@ class Checkbox:
     boxes.append(button2)
     boxes.append(button3)
     nboxes = []
- 
-    
-    
+
+
+
     b1= Checkbox(screen, 200, 350, 3, caption='Easy')
     b2 = Checkbox(screen, 200, 400, 4, caption='Medium')
     b3 = Checkbox(screen, 200, 450, 5, caption='Hard')
     nboxes.append(b1)
     nboxes.append(b2)
     nboxes.append(b3)
-    
+
     return boxes, nboxes
+
 pygame.init()
+pygame.font.init()
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Othello")
+clock = pygame.time.Clock()
+boxes, nboxes = [], []
+run = True
+flag1 = False
+flag2 = False
+check1 = None
+check2 = None
+
 while run:
     clock.tick(FPS)
     if(begining == 1):

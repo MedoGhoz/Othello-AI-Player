@@ -31,6 +31,7 @@ start_x =(200, 340)
 start_y =(500, 540)
 begining = 1
 middle = 1
+board = []
 board_width, board_height = cols*cell_size + (cols-1)* line, rows*cell_size + (rows-1)* line
 board_leftTop_x, board_leftTop_y = screen_width-board_width-20, 20
 print(board_width, board_height)
@@ -430,18 +431,21 @@ while run:
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
                (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
                 #to be sent to backend
+                row ,col = selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
                 print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
-                if (player == 1): next_player = 2
-                elif (player == 2): next_player = 1  
+                if(board[row][col]== 3):                
+                    if (player == 1): next_player = 2
+                    elif (player == 2): next_player = 1  
 
-                draw_board(screen)
-                #sample is the board output of backend
-                circles = circles_cor(sample)
-                draw_circles(screen, circles)
+                    draw_board(screen)
+                    #sample is the board output of backend
+                    board = sample
+                    circles = circles_cor(sample)
+                    draw_circles(screen, circles)
 
-                #1, 2 will be replaced with the output score of backend
-                draw_score(screen, 1, 2)
-                write_turn(screen, player)                
+                    #1, 2 will be replaced with the output score of backend
+                    draw_score(screen, 1, 2)
+                    write_turn(screen, player)                
                 pygame.display.update()
         
                 

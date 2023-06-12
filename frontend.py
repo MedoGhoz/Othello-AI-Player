@@ -436,7 +436,7 @@ while run:
                         middle = 1
                         twice = True 
                 if(twice):
-                    if(check3 !=none):
+                    if(check3 != None):
                         check3.checked = True
                         check3.render_checkbox()
                     reset = 1

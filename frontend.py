@@ -185,6 +185,92 @@ flag1 = False
 flag2 = False
 check1 = None
 check2 = None
+
+class Checkbox:
+    def __init__(self, surface, x, y, idnum, color=(230, 230, 230),
+        caption="", outline_color=(0, 0, 0), check_color=(0, 0, 0),
+        font_size=30, font_color=(0, 0, 0), text_offset=(28, 1), font='Ariel Black'):
+        self.surface = surface
+        self.x = x
+        self.y = y
+        self.color = color
+        self.caption = caption
+        self.oc = outline_color
+        self.cc = check_color
+        self.fs = font_size
+        self.fc = font_color
+        self.to = text_offset
+        self.ft = font
+
+        #identification for removal and reorginazation
+        self.idnum = idnum
+
+        # checkbox object
+        self.checkbox_obj = pygame.Rect(self.x, self.y, 12, 12)
+        self.checkbox_outline = self.checkbox_obj.copy()
+
+        # variables to test the different states of the checkbox
+        self.checked = False
+
+    def _draw_button_text(self):
+        self.font = pygame.font.SysFont(self.ft, self.fs)
+        self.font_surf = self.font.render(self.caption, True, self.fc)
+        w, h = self.font.size(self.caption)
+        self.font_pos = (self.x + self.to[0], self.y + 12 / 2 - h / 2 + 
+        self.to[1])
+        self.surface.blit(self.font_surf, self.font_pos)
+
+    def render_checkbox(self):
+        if self.checked:
+            pygame.draw.rect(self.surface, self.color, self.checkbox_obj)
+            pygame.draw.rect(self.surface, self.oc, self.checkbox_outline, 1)
+            pygame.draw.circle(self.surface, self.cc, (self.x + 6, self.y + 6), 4)
+
+        elif not self.checked:
+            pygame.draw.rect(self.surface, self.color, self.checkbox_obj)
+            pygame.draw.rect(self.surface, self.oc, self.checkbox_outline, 1)
+        self._draw_button_text()
+
+    def _update(self, event_object):
+        x, y = pygame.mouse.get_pos()
+        px, py, w, h = self.checkbox_obj
+        if px < x < px + w and py < y < py + w:
+            if self.checked:
+                self.checked = False
+            else:
+                self.checked = True
+
+    def update_checkbox(self, event_object):
+        if event_object.type == pygame.MOUSEBUTTONDOWN:
+            self.click = True
+            self._update(event_object)
+            
+ def check_boxes(screen):
+    boxes = []
+    font = pygame.font.Font('freesansbold.ttf', 38)
+
+    b_text = font.render('Mode: ', True, (0, 144, 103))
+    screen.blit(b_text, dest=(200, 30))
+
+    button = Checkbox(screen, 200, 100, 0, caption='Human vs Human')
+    button2 = Checkbox(screen, 200, 150, 1, caption='Human vs Computer')
+    button3 = Checkbox(screen, 200, 200, 2, caption='Computer vs Computer')
+    boxes.append(button)
+    boxes.append(button2)
+    boxes.append(button3)
+    nboxes = []
+ 
+    
+    
+    b1= Checkbox(screen, 200, 350, 3, caption='Easy')
+    b2 = Checkbox(screen, 200, 400, 4, caption='Medium')
+    b3 = Checkbox(screen, 200, 450, 5, caption='Hard')
+    nboxes.append(b1)
+    nboxes.append(b2)
+    nboxes.append(b3)
+    
+    return boxes, nboxes
+
 while run:
     clock.tick(FPS)
     if(begining == 1):

@@ -176,7 +176,7 @@ def draw_resetButton(screen):
     screen.blit(text, dest=(186,board_height/2+20+38-14+76+9))
     
     
-pygame.init()
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Othello")
 clock = pygame.time.Clock()
@@ -270,7 +270,7 @@ class Checkbox:
     nboxes.append(b3)
     
     return boxes, nboxes
-
+pygame.init()
 while run:
     clock.tick(FPS)
     if(begining == 1):

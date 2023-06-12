@@ -4,10 +4,13 @@ from .players.moves import updateState
 from .players.moves import printState
 from .players.minimax import minimax
 from copy import deepcopy
+from utils import expand, printState
+
 
 def validMoves(state: StateNode, playerNum, opponentNum):
     nextState = availableMoves(state.state, playerNum, opponentNum)
     return nextState["validMoves"]
+
 
 def nextStates(state: StateNode, playerNum, opponentNum):
     loopingState = deepcopy(state)
@@ -16,13 +19,15 @@ def nextStates(state: StateNode, playerNum, opponentNum):
     for move in nextState["validMoves"]:
         loopingState = deepcopy(state)
         node = StateNode()
-        node.state = updateState(loopingState.state, move[0], move[1], playerNum, opponentNum)
+        node.state = updateState(
+            loopingState.state, move[0], move[1], playerNum, opponentNum
+        )
         states.append(node)
     return states
 
+
 def expand(state: StateNode, playerNum, opponentNum, depth):
-    
-    if(depth == 0):
+    if depth == 0:
         return
     children = nextStates(state, playerNum, opponentNum)
     # print(children)
@@ -40,19 +45,21 @@ def expand(state: StateNode, playerNum, opponentNum, depth):
     #     for child in children:
     #         currentState.addChild(child)
     #         statesQueue.append(child)
-    #     i += 1   
+    #     i += 1
     # return state
 
+
 state = StateNode()
-state.state =[  [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 2, 1, 0, 0, 0],
-                [0, 0, 0, 1, 2, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-            ]
+state.state = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+]
 # print(validMoves(state, 1, 2))
 i = 20
 tree = expand(state, 1, 2, 2)
@@ -69,5 +76,23 @@ printState(move)
 # for firstChild in tree.getChildren():
 #     for child in firstChild.getChildren():
 #         printState(child.state)
-    
-        
+
+def setHeuristics(state: StateNode):
+    if len(state.getChildren()) == 0:
+        state.setHeuristic(dummyFunction(state.state))
+        return
+    for child in state.getChildren():
+        setHeuristics(child)
+    return state
+
+def dummyFunction(state):
+    return 20
+
+setHeuristics(tree)
+
+for firstChild in tree.getChildren():
+    printState(firstChild.state)
+    print("Heuristic value = ", firstChild.getHeuristic())
+    for child in firstChild.getChildren():
+        printState(child.state)
+        print("Heuristic value = ", child.getHeuristic())

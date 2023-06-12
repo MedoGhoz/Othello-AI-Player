@@ -484,7 +484,7 @@ while run:
                             if(j == 3 or j == 0):
                                 board_gameOver = False
                                 break 
-                    print("8888888888888",board_unique)
+                    print("8888888888888",board_gameOver)
                     if(not board_gameOver):
                         #1, 2 will be replaced with the output score of backend
                         circles = circles_cor(sample)

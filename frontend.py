@@ -209,7 +209,7 @@ while run:
             print("button3")
             
     elif(middle == 1):
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 38)
         screen.fill((34, 34, 34))
         _,nboxes = check_boxes(screen)
         b_text = font.render('Difficulty level: ', True, (0, 144, 103))

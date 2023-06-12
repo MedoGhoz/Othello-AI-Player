@@ -309,6 +309,8 @@ flag1 = False
 flag2 = False
 check1 = None
 check2 = None
+check3 = None
+twice = False
 font = pygame.font.Font('freesansbold.ttf', 32)
 while run:
     clock.tick(FPS)
@@ -399,33 +401,50 @@ while run:
 
                 pygame.display.update()                
                 pygame.display.flip()
-
+                if(check1 != None ):
+                    if(check1.caption == "Human vs Human"):
+                        begining = 0
+                        middle = 0
+                        reset = 1
+                    elif(check1.caption == "Computer vs Computer"):
+                        begining = 0
+                        middle = 1
                 
                 
                 
             elif(middle == 1): 
-               
+                
                 for box in nboxes:
                     box.update_checkbox(event)
                     if box.checked is True:
                         flag2 = True
-                        check2 = box
-                        middle = 0
-                        reset = 1
+                        if(not twice):
+                            check2 = box
+                            middle = 1
+                            reset = 0
+                        else :
+                            check3 = box
+                            middle = 0
+                            reset = 1
                         for b in boxes:
                             if b != box:
                                 b.checked = False
                 if(check2 != None):
                     check2.checked = True
                     check2.render_checkbox()
-
+                    if(check1.caption == "Computer vs Computer"):
+                        middle = 1
+                        twice = True 
+                if(twice):
+                    reset = 1
+                    twice = False
                 pygame.display.update()                
                 pygame.display.flip()
                 
                 
                 #to be sent check1 and check2
-                if(check1 != None and check2 != None):
-                    print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption)
+                if(check1 != None and check2 != None and check3 != None):
+                    print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption, check3.caption)
                 
 #                 if((mouse_pos[0]>= start_x[0]) and (mouse_pos[0]<= start_x[1]) and 
 #                     (mouse_pos[1]>= start_y[0]) and (mouse_pos[1]<= start_y[1])):
@@ -518,7 +537,6 @@ while run:
     
 
 pygame.quit()
-
 
 
 

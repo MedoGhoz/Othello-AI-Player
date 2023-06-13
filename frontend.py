@@ -609,6 +609,10 @@ while run:
                                     AI_move = True
                                 player1, player2 = player2, player1
                             else:
+                                if(check1.caption == "Human vs Human"):
+                                    board = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
+                                    if(len(availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['validMoves']) == 0):
+                                        ga = True
                                 prev_failed = True
                                 AI_move = False
 

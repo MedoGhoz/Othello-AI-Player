@@ -1,9 +1,12 @@
 
-
-
-
-
 import pygame 
+from game.internals.node import StateNode, Color
+from game.internals.game import Game
+from game.players.ai import AI
+from game.players.human import Human
+from game.players.moves import availableMoves
+from game.players.moves import printState
+from game.players.Heuristics import countBlack, countWhite
 
 
 # In[42]:
@@ -28,8 +31,8 @@ screen_height = 600
 rows, cols = 8, 8
 cell_size = 50
 line = 2 
-player = 1
-next_player = 1
+# player1.COLOR.value = 1
+next_player = None
 reset = 0
 FPS = 60
 reset_x =(150, 290)
@@ -43,6 +46,10 @@ game_over = False
 board = init_board
 board_width, board_height = cols*cell_size + (cols-1)* line, rows*cell_size + (rows-1)* line
 board_leftTop_x, board_leftTop_y = screen_width-board_width-20, 20
+difficulty = {"Easy":1, "Medium":2, "Hard":3}
+player1 = None
+player2 = None
+game = None
 print(board_width, board_height)
 
 
@@ -69,8 +76,6 @@ def draw_board(screen):
        
 
 
-# In[45]:
-
 
 def draw_circles(screen, circles):
     for circle in circles:
@@ -95,7 +100,7 @@ circles = [(443, 149,(255, 255, 255)), (495, 45, (0, 0, 0)), (651, 357,(255, 255
 def selected_cell(x, y):
     col = int((x - board_leftTop_x) / (line + cell_size))
     row = int((y - board_leftTop_y) / (line + cell_size))
-    return (row, col, player)
+    return (row, col)
 
 
 # In[48]:
@@ -146,7 +151,7 @@ def draw_score(screen, black_score, white_score):
     
     pygame.draw.circle(screen,(255, 255, 255),(100, board_height/2+20+38),23)
     w_text = font.render(f'Score: {white_score}', True, (255, 255, 255))
-    screen.blit(b_text, dest=(150, board_height/2+20+38-14))
+    screen.blit(w_text, dest=(150, board_height/2+20+38-14))
 
 
 # In[51]:
@@ -310,10 +315,32 @@ check1 = None
 check2 = None
 check3 = None
 twice = False
+AI_move = False
+flag_continue = False
+prev_failed = False
+ga= False
 font = pygame.font.Font('freesansbold.ttf', 32)
 while run:
     clock.tick(FPS)
     if(begining == 1):
+        flag1 = False
+        flag2 = False
+        check1 = None
+        check2 = None
+        check3 = None
+        twice = False
+        AI_move = False
+        flag_continue = False
+        prev_failed = False
+        ga= False
+        middle = 1
+        reset_flag = False
+        game_over = False
+        board = init_board
+        player1 = None
+        player2 = None
+        game = None
+        if(ga): ga = False
         screen.fill((34, 34, 34))
         boxes,_ = check_boxes(screen)
         
@@ -365,18 +392,66 @@ while run:
         draw_resetButton(screen)
         pygame.display.update()
         if(reset == 1):
+            print("-*-*-*--*-**-**-**-*--**")
+            game = Game()
+            if(check1.caption == "Human vs Human"):
+                player1 = Human(game, Color.BLACK)
+                player2 = Human(game, Color.WHITE)
+               
+            elif(check1.caption =="Human vs Computer"):
+                player1 = Human(game, Color.BLACK)
+                player2 = AI(game, Color.WHITE, difficulty[check2.caption])
+            elif(check1.caption == "Computer Vs Computer"):
+                player1 = AI(game, Color.BLACK, difficulty[check2.caption])
+                player2 = AI(game, Color.WHITE, difficulty[check3.caption])
+            print(player1, player2)
             screen.fill((34, 34, 34))
             draw_board(screen)
             screen_reset(screen)
             board = init_board
             draw_score(screen, 2, 2)
             pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80))        
-            player = 1 
+            # player1.COLOR.value = 1 
             write_turn(screen, 1)
             draw_resetButton(screen)
             pygame.display.update()
             reset = 0
             continue
+    if(check1 != None):    
+        if(AI_move and check1.caption == "Human vs Computer"):
+            if(prev_failed == True and len(availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['validMoves']) == 0):
+                ga = True
+            else:
+                player1.play()      
+                board =  availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['state']
+                print("AI board1")
+                printState(board)
+                print("AI board2")
+                aganist = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
+                printState(aganist)
+                human_valid = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['validMoves']
+                if(len(human_valid)!=0):
+                    AI_move = False
+                    player1, player2 = player2, player1
+                else:
+                    prev_failed = True
+                screen.fill((34, 34, 34))
+                draw_board(screen) 
+                circles = circles_cor(board)
+                draw_circles(screen, circles)
+                draw_score(screen, countBlack(board), countWhite(board))
+
+
+            if(ga):
+                pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80)) 
+                b_text = font.render("Game over!", True, (255, 255, 255))
+                screen.blit(b_text, dest=(300,501))
+                pygame.display.update()
+                pygame.time.wait(10000)
+                begining = 1
+                
+                
+#             pygame.time.wait(2000)         
     for event in pygame.event.get():        
         if event.type == pygame.QUIT:
             run = False
@@ -409,7 +484,8 @@ while run:
                         begining = 0
                         middle = 1
                 
-                
+                flag_continue = True
+                continue
                 
             elif(middle == 1): 
                 
@@ -446,6 +522,8 @@ while run:
                 #to be sent check1 and check2
                 if(check1 != None and check2 != None and check3 != None):
                     print("AAAAAAAAAFFFFFFFFFF",check1.caption, check2.caption, check3.caption)
+                flag_continue = True
+                continue
                 
 #                 if((mouse_pos[0]>= start_x[0]) and (mouse_pos[0]<= start_x[1]) and 
 #                     (mouse_pos[1]>= start_y[0]) and (mouse_pos[1]<= start_y[1])):
@@ -488,52 +566,72 @@ while run:
             elif((mouse_pos[0]>= board_leftTop_x) and (mouse_pos[0]<= board_leftTop_x+board_width) and 
                (mouse_pos[1]>= board_leftTop_y) and (mouse_pos[1]<= board_leftTop_y+ board_height)):
                 #to be sent to backend
-                row ,col,cur_player= selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
+                
+                row ,col= selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
                 print(selected_cell(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1]))
                 if(board[row][col]== 3): 
-                    reset_flag=True
-                    if (player == 1): next_player =  2
-                    elif (player == 2): next_player =  1  
+                    if isinstance(player1, Human):
+                        if(prev_failed == True and len(availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['validMoves']) == 0):
+                            ga = True
+                        else:
+                            player1.play(row, col)
+                            AI_move = True
 
-                    draw_board(screen)
-                    #sample is the board output of backend
-                    board = sample
-                    board_gameOver= True
-                    for i in board:
-                        for j in i:
-                            if(j == 3 or j == 0):
-                                board_gameOver = False
-                                break 
-                    print("8888888888888",board_gameOver)
-                    if(not board_gameOver):
-                        #1, 2 will be replaced with the output score of backend
-                        circles = circles_cor(sample)
-                        draw_circles(screen, circles)
-                        draw_score(screen, 1, 2)
-                    else:
+                            reset_flag=True
+                            # if (player1.COLOR.value == 1): next_player =  2
+                            # elif (player1.COLOR.value == 2): next_player =  1  
+
+                            draw_board(screen)
+                            #sample is the board output of backend
+                            board = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
+                            print("Human1")
+                            printState(board)
+                            print("Human2: ")
+                            aganist = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['state']
+                            printState(aganist)
+                            valid_AI = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['validMoves']
+                            if(len(valid_AI) != 0):
+                                AI_move = True
+                                player1, player2 = player2, player1
+                            else:
+                                prev_failed = True
+                                AI_move = False
+
+                            if(not ga):
+                                #1, 2 will be replaced with the output score of backend
+                                circles = circles_cor(board)
+                                draw_circles(screen, circles)
+                                draw_score(screen, countBlack(board), countWhite(board))
+        #                         pygame.time.wait(2000)
+
+                    if(ga):
                         pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80)) 
                         b_text = font.render("Game over!", True, (255, 255, 255))
                         screen.blit(b_text, dest=(300,501))
                         pygame.display.update()
-                        game_over = True
                         pygame.time.wait(10000)
+                        
                         begining = 1
-                else:
- 
-                    next_player = player
+
+#                 else:
+
+# #                     next_player = player1
                 
                 pygame.display.update()
-        
-    if(not game_over):                
-        if( reset or reset_flag):
-            player = next_player
-        if(not begining and not middle):
-            pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80))    
-            if(reset): 
-                player = 1            
-            write_turn(screen, player)        
+    if(flag_continue):    
+        if(not ga): 
+            if(player1 != None):               
+#                 if( reset or reset_flag):
+# #                     player1 = next_player
+                if(not begining and not middle):
+                    pygame.draw.rect(screen,(34, 34, 34),(295,495,180,80))    
+                    # if(reset): 
+                        # player1.COLOR.value = 1            
+                    if(player1 != None):
+                        write_turn(screen, player1.COLOR.value) 
+            
             pygame.display.update()
-        print(player)
+            # print(player1.COLOR.value)
     
     
 

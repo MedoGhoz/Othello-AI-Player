@@ -1,6 +1,6 @@
 import numpy as np
 from collections import deque
-from players.moves import availableMoves
+from ..players.moves import availableMoves
 
 
 # state = [ [0,1,0,0,0,0,0,2]
@@ -183,9 +183,9 @@ def Stability(max_player_color, state):
                 min_player_stable_coins+=breadth_first_search(color='white',start_col=col,start_row=row,state=state)
         if ( max_player_color=='white'):
             if state[row][col] == 2:
-                max_player_stable_coins+=breadth_first_search(color='white',start_col=col,start_row=row)
+                max_player_stable_coins+=breadth_first_search(color='white',start_col=col,start_row=row, state=state)
             if (state[row][col] == 1):
-                min_player_stable_coins+=breadth_first_search(color='black',start_col=col,start_row=row)
+                min_player_stable_coins+=breadth_first_search(color='black',start_col=col,start_row=row, state=state)
     # print(min_player_stable_coins,max_player_stable_coins)
     max_player_stability = max_player_stable_coins - max_player_unstable_coins
     min_player_stability = min_player_stable_coins - min_player_unstable_coins
@@ -216,6 +216,6 @@ def total_heuristic(current_state,max_player_color):
     
     # print(" corner:%f \n mobility:%f \n parity:%f \n stability:%f \n"%(corner_heuristic,mobility_heuristic, coin_parity_heuristic,stability_heuristic))
     total_heuristic =( 3*corner_heuristic+3*coin_parity_heuristic+stability_heuristic+3*mobility_heuristic) / 10
-    print(total_heuristic)
+    # print(total_heuristic)
     return total_heuristic
     

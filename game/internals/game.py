@@ -15,7 +15,4 @@ class Game:
 
   def setCurrentState(self, state):
       self.root.state = state
-
-  def minMax(self):
-    pass
-  
+      self.root.children = []

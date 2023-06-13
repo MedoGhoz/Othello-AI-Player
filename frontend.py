@@ -333,7 +333,9 @@ while run:
         flag_continue = False
         prev_failed = False
         ga= False
+        begining = 1
         middle = 1
+        reset = 1
         reset_flag = False
         game_over = False
         board = init_board
@@ -401,7 +403,8 @@ while run:
             elif(check1.caption =="Human vs Computer"):
                 player1 = Human(game, Color.BLACK)
                 player2 = AI(game, Color.WHITE, difficulty[check2.caption])
-            elif(check1.caption == "Computer Vs Computer"):
+            elif(check1.caption == "Computer vs Computer"):
+                AI_move = True
                 player1 = AI(game, Color.BLACK, difficulty[check2.caption])
                 player2 = AI(game, Color.WHITE, difficulty[check3.caption])
             print(player1, player2)
@@ -417,8 +420,12 @@ while run:
             pygame.display.update()
             reset = 0
             continue
-    if(check1 != None):    
-        if(AI_move and check1.caption == "Human vs Computer"):
+            
+    if(check1 != None):
+        if(check2 != None and check3 != None):
+            print("111111111111111111111",AI_move,check1.caption,check2.caption,check3.caption)
+        if(AI_move and (check1.caption == "Human vs Computer" or check1.caption == "Computer vs Computer")):
+            print("inside AI--------------------")
             if(prev_failed == True and len(availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['validMoves']) == 0):
                 ga = True
             else:
@@ -431,7 +438,8 @@ while run:
                 printState(aganist)
                 human_valid = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['validMoves']
                 if(len(human_valid)!=0):
-                    AI_move = False
+                    if(check1.caption != "Computer vs Computer"):
+                        AI_move = False
                     player1, player2 = player2, player1
                 else:
                     prev_failed = True
@@ -440,6 +448,8 @@ while run:
                 circles = circles_cor(board)
                 draw_circles(screen, circles)
                 draw_score(screen, countBlack(board), countWhite(board))
+                if(check1.caption == "Computer vs Computer"):
+                    pygame.time.wait(1000)
 
 
             if(ga):
@@ -575,7 +585,8 @@ while run:
                             ga = True
                         else:
                             player1.play(row, col)
-                            AI_move = True
+                            if(check1.caption == "Human vs Computer"):
+                                AI_move = True
 
                             reset_flag=True
                             # if (player1.COLOR.value == 1): next_player =  2
@@ -583,15 +594,19 @@ while run:
 
                             draw_board(screen)
                             #sample is the board output of backend
-                            board = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
+                            if(check1.caption =="Human vs Human"):
+                                board = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['state']
+                            else:
+                                board = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
                             print("Human1")
                             printState(board)
                             print("Human2: ")
-                            aganist = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['state']
+                            aganist = availableMoves(game.getCurrentNode().state, player1.COLOR.value, player2.COLOR.value)['state']
                             printState(aganist)
                             valid_AI = availableMoves(game.getCurrentNode().state, player2.COLOR.value, player1.COLOR.value)['validMoves']
                             if(len(valid_AI) != 0):
-                                AI_move = True
+                                if(check1.caption == "Human vs Computer"):
+                                    AI_move = True
                                 player1, player2 = player2, player1
                             else:
                                 prev_failed = True
